@@ -37,7 +37,7 @@
 
         const a = document.createElement('a');
         a.href = url;
-        a.download = fileInput.files[0].name.replace(/(\.\w+)?$/);
+        a.download = fileInput.files[0].name;
         a.click();
         URL.revokeObjectURL(url);
       };
