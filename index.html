@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>POINTS EDITOR FOR DELTARUNE CHAPTER 3</title>
+</head>
+<body>
+    <h2>POINTS EDITOR FOR DELTARUNE CHAPTER 3</h2>
+    <p>Upload filech3_X</p>
+  <input type="file" id="fileInput" /><br><br>
+  <textarea id="replacement" placeholder="Points value" rows="3" cols="60"></textarea><br><br>
+  <button onclick="processFile()">New file.</button>
+
+  <script>
+    function processFile() {
+      const fileInput = document.getElementById('fileInput');
+      const replacementText = document.getElementById('replacement').value;
+
+      if (!fileInput.files.length) {
+        alert('Please select a file.');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const lines = e.target.result.split(/\r?\n/);
+
+        if (lines.length >= 1597) {
+          lines[1596] = replacementText; // index is 0-based
+        } else {
+          alert('INVALID FILE, NO CHANGE MADE');
+        }
+
+        const modifiedContent = lines.join('\n');
+        const blob = new Blob([modifiedContent], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileInput.files[0].name.replace(/(\.\w+)?$/);
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+
+      reader.readAsText(fileInput.files[0]);
+    }
+  </script>
+</body>
+</html>
